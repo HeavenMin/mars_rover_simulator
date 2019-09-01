@@ -7,12 +7,10 @@ package Models;
 public class Position {
     private int x;
     private int y;
-    private DirectionEnum direction;
 
-    public Position(int x, int y, DirectionEnum direction) {
+    public Position(int x, int y) {
         this.x = x;
         this.y = y;
-        this.direction = direction;
     }
 
     public int getX() {
@@ -31,11 +29,8 @@ public class Position {
         this.y = y;
     }
 
-    public DirectionEnum getDirection() {
-        return direction;
-    }
-
-    public void setDirection(DirectionEnum direction) {
-        this.direction = direction;
+    @Override
+    public String toString() {
+        return String.format("(%d, %d)", x, y);
     }
 }
