@@ -1,5 +1,7 @@
 package Managers;
 
+import Models.LandEnum;
+import Models.PlateauMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -39,5 +41,15 @@ class PlateauDataManagerTest {
         for (int i = 1; i < plateauConfigStringList.length; i++) {
             assertEquals(exp, plateauConfigStringList[i].length());
         }
+    }
+
+    @Test
+    void testGetPlateauMapWithConfig_whenGetPlateauConfig_IsCorrect() {
+        // when
+        LandEnum[][] plateauLand2dArray = sut.getPlateauMapWithConfig();
+        PlateauMap plateauMap = new PlateauMap(plateauLand2dArray);
+
+        // then
+        assertEquals(sut.getConfigString(), plateauMap.toString());
     }
 }
