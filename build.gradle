@@ -23,7 +23,7 @@ test {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'Controllers.MarsRoverSimulatorController',
+                'Main-Class': 'MarsRoverSimulator',
                 'Implementation-Version': version
         )
     }
