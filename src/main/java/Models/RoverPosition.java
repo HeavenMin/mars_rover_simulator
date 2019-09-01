@@ -7,6 +7,11 @@ package Models;
 public class RoverPosition extends Position {
     private DirectionEnum direction;
 
+    public RoverPosition(Position position, DirectionEnum direction) {
+        super(position.getX(), position.getY());
+        this.direction = direction;
+    }
+
     public RoverPosition(int x, int y, DirectionEnum direction) {
         super(x, y);
         this.direction = direction;
