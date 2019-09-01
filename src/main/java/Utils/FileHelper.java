@@ -22,7 +22,7 @@ public class FileHelper {
                 return null;
             }
             try (Scanner scanner = new Scanner(inputStream)) {
-                return scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+                return scanner.useDelimiter("\\A").hasNext() ? scanner.next().trim() : "";
             }
         } catch (IOException e) {
             LOGGER.log(Level.WARNING,
