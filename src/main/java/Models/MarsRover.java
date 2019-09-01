@@ -4,7 +4,6 @@ import Exceptions.CanNotReachException;
 import Exceptions.DoNotExistRoverException;
 import Exceptions.MapOutOfBoundaryException;
 import Exceptions.NotNearbyException;
-import Managers.PlateauDataManager;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +34,14 @@ public class MarsRover {
     }
 
     public void moveForward() {
+        moveTo(getDestinationPositionWhenMoveForward());
+    }
+
+    public void moveForwardWithAnalysis(IAnalysis analysis) {
+        moveTo(getDestinationPositionWhenMoveForward(), analysis);
+    }
+
+    private Position getDestinationPositionWhenMoveForward() {
         int destinationX = position.getX();
         int destinationY = position.getY();
         DirectionEnum direction = position.getDirection();
@@ -52,15 +59,25 @@ public class MarsRover {
                 destinationX -= 1;
                 break;
         }
-        moveTo(new Position(destinationX, destinationY));
+        return new Position(destinationX, destinationY);
     }
 
     public void turnRight() {
         position.setDirection(position.getDirection().turnRight());
     }
 
+    public void turnRightWithAnalysis(IAnalysis analysis) {
+        turnRight();
+        analysis.analyze();
+    }
+
     public void turnLeft() {
         position.setDirection(position.getDirection().turnLeft());
+    }
+
+    public void turnLeftWithAnalysis(IAnalysis analysis) {
+        turnLeft();
+        analysis.analyze();
     }
 
     private void setRoverInitPosition(Position position) {
@@ -68,10 +85,8 @@ public class MarsRover {
             map.setMarsRoverPosition(position);
         } catch (MapOutOfBoundaryException e) {
             LOGGER.log(Level.WARNING, "Position out of map boundary.");
-            // TODO
         } catch (CanNotReachException e) {
             LOGGER.log(Level.WARNING, "Can not reach the area.");
-            // TODO
         }
     }
 
@@ -85,10 +100,25 @@ public class MarsRover {
             LOGGER.log(Level.WARNING, "Position is not nearby.");
         } catch (MapOutOfBoundaryException e) {
             LOGGER.log(Level.WARNING, "Position out of map boundary.");
-            // TODO
         } catch (CanNotReachException e) {
             LOGGER.log(Level.WARNING, "Can not reach the area.");
-            // TODO
+        }
+    }
+
+    private void moveTo(Position destination, IAnalysis analysis) {
+        try {
+            map.moveMarsRoverPosition(this.position, destination);
+            position = new RoverPosition(destination, position.getDirection());
+        } catch (DoNotExistRoverException e) {
+            LOGGER.log(Level.WARNING, "Do not have rover in this position.");
+        } catch (NotNearbyException e) {
+            LOGGER.log(Level.WARNING, "Position is not nearby.");
+        } catch (MapOutOfBoundaryException e) {
+            LOGGER.log(Level.WARNING, "Position out of map boundary.");
+            analysis.analyze();
+        } catch (CanNotReachException e) {
+            LOGGER.log(Level.WARNING, "Can not reach the area.");
+            analysis.analyze();
         }
     }
 
